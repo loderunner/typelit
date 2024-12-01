@@ -140,7 +140,7 @@ export function prmpt<Vars extends VarList>(
 }
 
 /**
- * Built-in variable type creator for boolean values.
+ * Variable creator for boolean values.
  * ```ts
  * const template = prmpt`The switch is ${prmpt.boolean("enabled")}`
  * template({ enabled: true }) // "The switch is true"
@@ -149,7 +149,7 @@ export function prmpt<Vars extends VarList>(
 prmpt.boolean = createType<boolean>();
 
 /**
- * Built-in variable type creator for string values.
+ * Variable creator for string values.
  * ```ts
  * const template = prmpt`Hello ${prmpt.string("name")}!`
  * template({ name: "Alice" }) // "Hello Alice!"
@@ -158,7 +158,7 @@ prmpt.boolean = createType<boolean>();
 prmpt.string = createType<string>();
 
 /**
- * Built-in variable type creator for number values.
+ * Variable creator for number values.
  * ```ts
  * const template = prmpt`You are number ${prmpt.number("position")} in line`
  * template({ position: 3 }) // "You are number 3 in line"
@@ -167,7 +167,7 @@ prmpt.string = createType<string>();
 prmpt.number = createType<number>();
 
 /**
- * Built-in variable type creator for bigint values.
+ * Variable creator for bigint values.
  * ```ts
  * const template = prmpt`Transaction ID: ${prmpt.bigint("id")}`
  * template({ id: 123456789n }) // "Transaction ID: 123456789"
