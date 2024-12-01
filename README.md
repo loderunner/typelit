@@ -15,13 +15,13 @@ maintaining full type information about the required context object structure.
 
 Install using npm:
 
-```shell
+```bash
 npm install prmpt
 ```
 
 Or using yarn:
 
-```shell
+```bash
 yarn add prmpt
 ```
 
@@ -67,6 +67,57 @@ template({
   },
 });
 ```
+
+## Template Function
+
+The `prmpt` tag function creates template functions that evaluate a string
+template using values from a context object. The template function takes a
+context object as input and returns the evaluated string with all variables
+replaced by their values.
+
+When creating a template, TypeScript infers the required shape of the context
+object from the variables used in the template.
+
+```typescript
+// Example showing type inference
+const welcome = prmpt`Welcome back, ${prmpt.string('username')}!`;
+
+// TypeScript infers that the context must have a 'username' property
+welcome({ username: 'alice' }); // OK
+welcome({ user: 'bob' }); // Type error: missing username
+welcome({ username: 123 }); // Type error: number is not assignable to string
+```
+
+### Features
+
+The `prmpt` function serves a dual purpose:
+
+1. As a template tag function that creates typed template functions
+2. As a namespace that provides variable creators (`string`, `number`, etc.)
+
+Template functions created with `prmpt` offer:
+
+- **Type Safety**: All variables are fully typed, ensuring you can't pass the
+  wrong type of value.
+- **Path Inference**: TypeScript automatically infers the required structure of
+  your context object.
+- **Composition**: Templates can be composed to build more complex strings:
+
+```typescript
+const firstName = prmpt`${prmpt.string('user', 'firstName')}`;
+const lastName = prmpt`${prmpt.string('user', 'lastName')}`;
+const fullName = prmpt`${firstName} ${lastName}`;
+
+// Both templates require the same context structure
+firstName({ user: { firstName: 'John' } });
+fullName({ user: { firstName: 'John', lastName: 'Doe' } });
+```
+
+- **Compile-Time Validation**: TypeScript catches errors before runtime:
+  - Missing or misspelled variable paths
+  - Incorrect value types
+  - Missing context properties
+  - Invalid template syntax
 
 ## Variable Creators
 
