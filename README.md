@@ -22,6 +22,7 @@ maintaining full type information about the required context object structure.
   - [Number](#number)
   - [Boolean](#boolean)
   - [BigInt](#bigint)
+- [Custom Variable Creators](#custom-variable-creators)
 
 ## Getting Started
 
@@ -193,3 +194,39 @@ id({ userId: 9007199254740991n }); // "ID: 9007199254740991"
 const transactionId = prmpt`Transaction: ${prmpt.bigint('payment', 'transactionId')}`;
 transactionId({ payment: { transactionId: 123456789n } }); // "Transaction: 123456789"
 ```
+
+## Custom Variable Creators
+
+You can create your own variable creators for any type using the `createType`
+function. Here's an example creating a variable creator for JavaScript's `Date`
+type:
+
+```typescript
+import { createType } from 'prmpt';
+
+// Create a variable creator for Date
+const prmptDate = createType<Date>();
+
+// Use it in a template
+const template = prmpt`Event starts at ${prmptDate('event', 'startTime')}`;
+
+// The context object requires a Date instance
+const result = template({
+  event: {
+    startTime: new Date('2024-12-25T10:00:00Z'),
+  },
+}); // "Event starts at Wed Dec 25 2024 10:00:00 GMT+0000"
+
+// Type error: string is not assignable to Date
+template({
+  event: {
+    startTime: '2024-12-25', // Error!
+  },
+});
+```
+
+Like built-in variable creators, custom ones:
+
+- Support nested paths
+- Provide full type inference for the context object
+- Enforce the correct type at compile time
