@@ -55,7 +55,7 @@ export function createType<T>() {
  * type Name = VarName<Var<["user", "name"], string>>; // "user"
  * ```
  */
-export type VarName<T> = T extends Var<infer VN, infer VT> ? VN[0] : never;
+export type VarName<T> = T extends Var<infer VN, infer _VT> ? VN[0] : never;
 
 /**
  * Extracts the type structure of a variable, maintaining the nested path except for the first name.
@@ -67,9 +67,9 @@ export type VarName<T> = T extends Var<infer VN, infer VT> ? VN[0] : never;
  */
 export type VarType<T extends Var<string[], any>> =
   T extends Var<infer VN, infer VT>
-    ? VN extends [infer Head extends string]
+    ? VN extends [infer _Head extends string]
       ? VT
-      : VN extends [infer Head extends string, ...infer Rest extends string[]]
+      : VN extends [infer _Head extends string, ...infer Rest extends string[]]
         ? Nested<Rest, VT>
         : never
     : never;
@@ -96,7 +96,7 @@ export type UnionToIntersection<U> = (
  * Helper type to "prettify" complex Context types
  */
 type Prettify<T> = {
-  [K in keyof T]: T[K] extends Context<infer Vars> ? Prettify<T[K]> : T[K];
+  [K in keyof T]: T[K] extends Context<infer _Vars> ? Prettify<T[K]> : T[K];
 } & {};
 
 /**
