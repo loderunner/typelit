@@ -1,5 +1,6 @@
 import pluginJs from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
+import jsdoc from 'eslint-plugin-jsdoc';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -45,6 +46,22 @@ export default [
           alphabetize: { order: 'asc' },
         },
       ],
+    },
+  },
+  {
+    plugins: { jsdoc },
+    settings: {
+      jsdoc: {
+        mode: 'typescript',
+      },
+    },
+    rules: {
+      'jsdoc/require-jsdoc': ['warn', { publicOnly: true }],
+      'jsdoc/check-alignment': 'warn',
+      'jsdoc/check-indentation': 'warn',
+      'jsdoc/multiline-blocks': 'warn',
+      'jsdoc/no-types': 'warn',
+      'jsdoc/require-description': 'warn',
     },
   },
 ];

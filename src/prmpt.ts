@@ -35,10 +35,10 @@ export function createType<T>() {
 }
 
 /** Extracts the top-level name from a Var type */
-type VarName<T> = T extends Var<infer VN, infer VT> ? VN[0] : never;
+export type VarName<T> = T extends Var<infer VN, infer VT> ? VN[0] : never;
 
-/** Extracts the leaf-level type from a nested Var structure */
-type VarType<T extends Var<string[], any>> =
+/** Extracts the underlying type from a Var type */
+export type VarType<T extends Var<string[], any>> =
   T extends Var<infer VN, infer VT>
     ? VN extends [infer Head extends string]
       ? VT
@@ -48,14 +48,14 @@ type VarType<T extends Var<string[], any>> =
     : never;
 
 /** Base type that all arrays of Var extend */
-export type VarList = Var<string[], any>[];
+type VarList = Var<string[], any>[];
 
 /** Converts a union type to an intersection type */
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I,
-) => void
+export type UnionToIntersection<U> = (
+  U extends object ? (k: U) => void : U
+) extends (k: infer I) => void
   ? I
-  : never;
+  : U;
 
 /** Helper type to "prettify" complex Context types */
 type Prettify<T> = {
@@ -72,29 +72,14 @@ export type PrmptFn<Vars extends VarList> = (ctx: Context<Vars>) => string;
 
 /**
  * Tagged template that creates a function to interpolate Var values from a context into a string.
- *
- * ```ts
- * // Simple template with one variable
- * const hello = prmpt`Hello ${prmptString('name')}!`
- * hello({ name: 'Alice' }) // "Hello Alice!"
- *
- * // Multiple variables with nested paths
- * const contactInfo = prmpt`User ${prmptString('user', 'name')} (${prmptString('user', 'email')})`
- * contactInfo({ user: { name: 'Bob', email: 'bob@example.com' } }) // "User Bob (bob@example.com)"
- *
- * // Mixed variable types
- * const meeting = prmpt`Meeting in ${prmptString('location')} on ${prmptDate('date')}`
- * meeting({ location: 'Paris', date: new Date('2024-01-01') })
- * // "Meeting in Paris on Mon Jan 01 2024"
- * ```
  */
 export function prmpt<Vars extends VarList>(
   strings: TemplateStringsArray,
   ...vars: Vars
 ): PrmptFn<Vars> {
-  return (ctx: any) =>
+  return (ctx: Context<Vars>) =>
     vars.reduce<string>(
-      // @ts-expect-error
+      // @ts-expect-error type of `v` loses specificity during iteration
       (acc, v, i) => acc + String(v._extract(ctx)) + strings[i + 1],
       strings[0],
     );
