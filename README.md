@@ -45,6 +45,36 @@ Or using yarn:
 yarn add prmpt
 ```
 
+The library is available in multiple module formats to support different
+environments:
+
+- CommonJS (Node.js):
+
+```typescript
+const prmpt = require('prmpt');
+const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+```
+
+- ESM (Modern JavaScript):
+
+```typescript
+import prmpt from 'prmpt';
+const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+```
+
+- UMD (Browser):
+
+```html
+<script src="/path/to/prmpt.js"></script>
+<script>
+  const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+</script>
+```
+
+Each format provides identical functionality - pick the one that best suits your
+environment. The library includes TypeScript type definitions that work
+automatically with all formats.
+
 ### Basic Usage
 
 First, import the library:
