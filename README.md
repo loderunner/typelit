@@ -9,6 +9,20 @@ inference.
 read. Variables are referenced using a familiar template literal syntax while
 maintaining full type information about the required context object structure.
 
+## Table of contents
+
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
+  - [Basic Usage](#basic-usage)
+  - [Nested Context Objects](#nested-context-objects)
+- [Template Function](#template-function)
+  - [Features](#features)
+- [Variable Creators](#variable-creators)
+  - [String Variables](#string-variables)
+  - [Number Variables](#number-variables)
+  - [Boolean Variables](#boolean-variables)
+  - [BigInt Variables](#bigint-variables)
+
 ## Getting Started
 
 ### Installation
