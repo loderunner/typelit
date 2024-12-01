@@ -1,6 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { prmpt } from './prmpt';
+import { createType, prmpt } from './prmpt';
+
+beforeAll(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2006-01-02T15:04:05.000+07:00'));
+});
+
+afterAll(() => {
+  vi.useRealTimers();
+});
 
 describe('prmpt template function', () => {
   it('should return the empty string', () => {
@@ -65,6 +74,34 @@ describe('prmpt variable types', () => {
   });
   it('bigint', () => {
     const template = prmpt`${prmpt.bigint('hello')}`;
-    expect(template({ hello: BigInt(9007199254740991) }));
+    expect(template({ hello: 9007199254740991n })).toBe('9007199254740991');
+  });
+  it('date', () => {
+    const template = prmpt`${prmpt.date('date')}`;
+    expect(template({ date: new Date() })).toBe(
+      'Mon Jan 02 2006 08:04:05 GMT+0000 (Greenwich Mean Time)',
+    );
+  });
+  it('object', () => {
+    const template = prmpt`${prmpt.json('hello')}`;
+    expect(template({ hello: { user: { name: 'Toto', age: 23 } } })).toBe(`{
+  "user": {
+    "name": "Toto",
+    "age": 23
+  }
+}`);
+  });
+});
+
+describe('createType', () => {
+  it('basic usage', () => {
+    const prmptRegExp = createType<RegExp>();
+    const template = prmpt`${prmptRegExp('pattern')}`;
+    expect(template({ pattern: /['"](.*?)['"]/g })).toBe('/[\'"](.*?)[\'"]/g');
+  });
+  it('with stringify', () => {
+    const prmptDate = createType<Date>({ stringify: (d) => d.toISOString() });
+    const template = prmpt`${prmptDate('date')}`;
+    expect(template({ date: new Date() })).toBe('2006-01-02T08:04:05.000Z');
   });
 });

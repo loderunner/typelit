@@ -22,7 +22,10 @@ maintaining full type information about the required context object structure.
   - [Number](#number)
   - [Boolean](#boolean)
   - [BigInt](#bigint)
+  - [Date](#date)
+  - [JSON](#json)
 - [Custom Variable Creators](#custom-variable-creators)
+  - [Customizing String Conversion](#customizing-string-conversion)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -197,11 +200,64 @@ const transactionId = prmpt`Transaction: ${prmpt.bigint('payment', 'transactionI
 transactionId({ payment: { transactionId: 123456789n } }); // "Transaction: 123456789"
 ```
 
+### Date
+
+Use `prmpt.date()` to create Date variables that automatically convert
+JavaScript Date objects to strings:
+
+```typescript
+// Simple date variable
+const eventDate = prmpt`Event date: ${prmpt.date('date')}`;
+eventDate({ date: new Date('2024-12-25') }); // "Event date: Wed Dec 25 2024 00:00:00 GMT+0000"
+
+// Nested date variable
+const appointmentTime = prmpt`Appointment scheduled for: ${prmpt.date('calendar', 'appointment')}`;
+appointmentTime({
+  calendar: { appointment: new Date('2024-12-25T15:30:00Z') },
+}); // "Appointment scheduled for: Wed Dec 25 2024 15:30:00 GMT+0000"
+```
+
+### JSON
+
+Use `prmpt.json()` to create variables that automatically stringify any value to
+JSON with proper formatting:
+
+```typescript
+// Simple JSON variable
+const data = prmpt`Data: ${prmpt.json('config')}`;
+data({ config: { enabled: true, count: 42 } });
+// "Data: {
+//   "enabled": true,
+//   "count": 42
+// }"
+
+// Nested JSON variable
+const userProfile = prmpt`Profile: ${prmpt.json('user', 'profile')}`;
+userProfile({
+  user: {
+    profile: {
+      name: 'Alice',
+      preferences: {
+        theme: 'dark',
+        notifications: true,
+      },
+    },
+  },
+});
+// "Profile: {
+//   "name": "Alice",
+//   "preferences": {
+//     "theme": "dark",
+//     "notifications": true
+//   }
+// }"
+```
+
 ## Custom Variable Creators
 
 You can create your own variable creators for any type using the `createType`
-function. Here's an example creating a variable creator for JavaScript's `Date`
-type:
+function. Here's a basic example creating a variable creator for JavaScript's
+`Date` type:
 
 ```typescript
 import { createType } from 'prmpt';
@@ -232,6 +288,65 @@ Like built-in variable creators, custom ones:
 - Support nested paths
 - Provide full type inference for the context object
 - Enforce the correct type at compile time
+
+### Customizing String Conversion
+
+The `createType` function accepts an optional `options`. The `options.stringify`
+parameter is a function that takes a value of your type and returns a string.
+
+Here are some examples of customizing string conversion:
+
+```typescript
+// Custom date formatting
+const prmptDate = createType<Date>({
+  stringify: (date) =>
+    date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }),
+});
+
+const event = prmpt`Event: ${prmptDate('date')}`;
+event({ date: new Date('2024-12-25') }); // "Event: Wed, Dec 25, 2024"
+
+// Currency formatting
+const prmptPrice = createType<number>({
+  stringify: (price) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(price),
+});
+
+const price = prmpt`Total: ${prmptPrice('amount')}`;
+price({ amount: 42.99 }); // "Total: $42.99"
+
+// Custom object formatting
+type User = { id: number; name: string };
+const prmptUser = createType<User>({
+  stringify: (user) => `#${user.id} ${user.name}`,
+});
+
+const user = prmpt`Created by: ${prmptUser('author')}`;
+user({ author: { id: 123, name: 'Alice' } }); // "Created by: #123 Alice"
+```
+
+Without a custom `stringify` function, `createType` uses JavaScript's built-in
+`String()` function to convert values to strings. This is equivalent to:
+
+```typescript
+createType<T>({ stringify: String });
+```
+
+You might want to provide a custom `stringify` function when:
+
+- Formatting dates in a specific way
+- Formatting numbers (currency, percentages, fixed decimal places)
+- Creating a custom string representation for objects
+- Adding prefixes, suffixes, or other decorations to values
+- Internationalizing or localizing output
 
 ## Contributing
 

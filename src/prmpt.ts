@@ -24,26 +24,54 @@ export type Nested<Names extends string[], T> = Names extends [
     : never;
 
 /**
- * Core prompt variable type that can extract a value from a nested context.
+ * Core prompt variable type that can extract a value from a nested context and
+ * stringify it.
  */
 export type Var<Names extends string[], T> = {
   _extract: (ctx: Nested<Names, T>) => T;
+  stringify: (value: T) => string;
 };
 
 /**
- * Creates a type factory function for creating strongly-typed variable references.
+ * Options for creating a prompt variable factory function.
+ */
+export type CreateOptions<T> = {
+  /**
+   * Optional function to convert a value of type T to a string.
+   * If not provided, the default `String` function will be used.
+   */
+  stringify?: (value: T) => string;
+};
+
+/**
+ * Creates a prompt variable factory function for creating strongly-typed variable references.
  * Used to create type-specific variable creators (e.g., `string`, `number`, `boolean`).
+ *
+ * @param options - Configuration options for the variable type
+ * @param options.stringify - Custom function to convert values to strings. Useful when the default
+ *                           `String()` conversion isn't suitable (e.g., for formatting numbers or dates).
+ *                           If not provided, the standard `String()` function is used.
  *
  * Returns a function that creates variable references with nested paths.
  *
  * ```ts
+ * // Basic usage with default string conversion
  * const stringVar = createType<string>();
  * const myVar = stringVar("user", "name");   // Var<["user", "name"], string>
+ *
+ * // Custom string conversion for numbers
+ * const numberVar = createType<number>({
+ *   stringify: (n) => n.toFixed(2)  // Convert numbers to strings with 2 decimal places
+ * });
+ * const priceVar = numberVar("product", "price");  // Var<["product", "price"], number>
  * ```
  */
-export function createType<T>() {
+export function createType<T>(options: CreateOptions<T> = {}) {
   return function <Names extends string[]>(...names: Names): Var<Names, T> {
-    return { _extract: (ctx) => names.reduce((obj, n) => obj[n], ctx as any) };
+    return {
+      _extract: (ctx) => names.reduce((obj, n) => obj[n], ctx as any),
+      stringify: options.stringify ?? String,
+    };
   };
 }
 
@@ -134,7 +162,7 @@ export function prmpt<Vars extends VarList>(
   return (ctx: Context<Vars>) =>
     vars.reduce<string>(
       // @ts-expect-error type of `v` loses specificity during iteration
-      (acc, v, i) => acc + String(v._extract(ctx)) + strings[i + 1],
+      (acc, v, i) => acc + v.stringify(v._extract(ctx)) + strings[i + 1],
       strings[0],
     );
 }
@@ -174,3 +202,30 @@ prmpt.number = createType<number>();
  * ```
  */
 prmpt.bigint = createType<bigint>();
+
+/**
+ * Variable creator for Date values.
+ *
+ * ```ts
+ * const template = prmpt`Event date: ${prmpt.date("eventDate")}`
+ * template({ eventDate: new Date("2023-05-15") }) // "Event date: Mon May 15 2023 00:00:00 GMT+0000 (Coordinated Universal Time)"
+ * ```
+ */
+prmpt.date = createType<Date>();
+
+/**
+ * Variable creator for any value type.
+ * Stringifies the value to JSON with 2-space indentation.
+ *
+ * ```ts
+ * const template = prmpt`Data: ${prmpt.json("data")}`
+ * template({ data: { name: "Alice", age: 30 } })
+ * // "Data: {
+ * //   "name": "Alice",
+ * //   "age": 30
+ * // }"
+ * ```
+ */
+prmpt.json = createType<any>({
+  stringify: (obj) => JSON.stringify(obj, null, 2),
+});
