@@ -18,10 +18,10 @@ maintaining full type information about the required context object structure.
 - [Template Function](#template-function)
   - [Features](#features)
 - [Variable Creators](#variable-creators)
-  - [String Variables](#string-variables)
-  - [Number Variables](#number-variables)
-  - [Boolean Variables](#boolean-variables)
-  - [BigInt Variables](#bigint-variables)
+  - [String](#string)
+  - [Number](#number)
+  - [Boolean](#boolean)
+  - [BigInt](#bigint)
 
 ## Getting Started
 
@@ -138,7 +138,7 @@ fullName({ user: { firstName: 'John', lastName: 'Doe' } });
 `prmpt` provides built-in variable creators for common data types. These are
 used to define variables in your templates with type-safe paths.
 
-### String Variables
+### String
 
 Use `prmpt.string()` to create string variables in your templates:
 
@@ -152,7 +152,7 @@ const userEmail = prmpt`Contact: ${prmpt.string('user', 'email')}`;
 userEmail({ user: { email: 'alice@example.com' } }); // "Contact: alice@example.com"
 ```
 
-### Number Variables
+### Number
 
 Use `prmpt.number()` to create number variables:
 
@@ -166,7 +166,7 @@ const score = prmpt`Score: ${prmpt.number('game', 'score')} points`;
 score({ game: { score: 100 } }); // "Score: 100 points"
 ```
 
-### Boolean Variables
+### Boolean
 
 Use `prmpt.boolean()` to create boolean variables:
 
@@ -180,7 +180,7 @@ const accountStatus = prmpt`Account active: ${prmpt.boolean('user', 'account', '
 accountStatus({ user: { account: { enabled: false } } }); // "Account active: false"
 ```
 
-### BigInt Variables
+### BigInt
 
 Use `prmpt.bigint()` to create bigint variables:
 
