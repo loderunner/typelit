@@ -49,8 +49,8 @@ export type CreateOptions<T> = {
  *
  * @param options - Configuration options for the variable type
  * @param options.stringify - Custom function to convert values to strings. Useful when the default
- *                           `String()` conversion isn't suitable (e.g., for formatting numbers or dates).
- *                           If not provided, the standard `String()` function is used.
+ * `String()` conversion isn't suitable (e.g., for formatting numbers or dates).
+ * If not provided, the standard `String()` function is used.
  *
  * Returns a function that creates variable references with nested paths.
  *
