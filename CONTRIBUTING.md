@@ -1,6 +1,6 @@
 # Contributing to `typelit`
 
-Thank you for your interest in contributing to typelit! This document will guide
+Thank you for your interest in contributing to Typelit! This document will guide
 you through setting up your development environment and explain our development
 process.
 
