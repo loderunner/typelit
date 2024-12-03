@@ -2,6 +2,12 @@
 
 > "Type-safe template string literals"
 
+[![NPM Version](https://img.shields.io/npm/v/typelit?logo=npm)](https://www.npmjs.com/package/typelit)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/typelit) ](https://bundlephobia.com/package/typelit)
+[![dependency count](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbundlephobia.com%2Fapi%2Fsize%3Fpackage%3Dtypelit&query=dependencyCount&label=dependencies)](https://bundlephobia.com/package/typelit)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/loderunner/typelit/lint-test-build.yml?logo=github)](https://github.com/loderunner/typelit/actions/workflows/lint-test-build.yml?query=branch%3Amain)
+[![GitHub License](https://img.shields.io/github/license/loderunner/typelit)](./LICENSE)
+
 A type-safe string templating library for TypeScript that provides
 strongly-typed variable references with support for nested paths. Create
 template strings with compile-time type checking and automatic context type
