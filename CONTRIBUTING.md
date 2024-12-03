@@ -1,6 +1,6 @@
-# Contributing to `prmpt`
+# Contributing to `typelit`
 
-Thank you for your interest in contributing to prmpt! This document will guide
+Thank you for your interest in contributing to Typelit! This document will guide
 you through setting up your development environment and explain our development
 process.
 
@@ -18,8 +18,8 @@ process.
 2. Clone your fork locally:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/prmpt.git
-cd prmpt
+git clone https://github.com/YOUR_USERNAME/typelit.git
+cd typelit
 ```
 
 3. Install dependencies:

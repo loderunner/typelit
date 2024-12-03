@@ -144,21 +144,21 @@ export type Context<Vars extends VarList> = Prettify<{
  * Represents a function that takes a context object and returns a string.
  * Used as the type for compiled prompt templates.
  */
-export type PrmptFn<Vars extends VarList> = (ctx: Context<Vars>) => string;
+export type TemplateFn<Vars extends VarList> = (ctx: Context<Vars>) => string;
 
 /**
  * Creates a type-safe prompt template function from a template literal and variables.
  * The resulting function accepts a context object and returns the formatted string.
  *
  * ```ts
- * const template = prmpt`Hello ${prmpt.string("user", "name")}!`;
+ * const template = typelit`Hello ${typelit.string("user", "name")}!`;
  * const result = template({ user: { name: "Alice" } }); // "Hello Alice!"
  * ```
  */
-export function prmpt<Vars extends VarList>(
+export function typelit<Vars extends VarList>(
   strings: TemplateStringsArray,
   ...vars: Vars
-): PrmptFn<Vars> {
+): TemplateFn<Vars> {
   return (ctx: Context<Vars>) =>
     vars.reduce<string>(
       // @ts-expect-error type of `v` loses specificity during iteration
@@ -170,55 +170,55 @@ export function prmpt<Vars extends VarList>(
 /**
  * Variable creator for boolean values.
  * ```ts
- * const template = prmpt`The switch is ${prmpt.boolean("enabled")}`
+ * const template = typelit`The switch is ${typelit.boolean("enabled")}`
  * template({ enabled: true }) // "The switch is true"
  * ```
  */
-prmpt.boolean = createType<boolean>();
+typelit.boolean = createType<boolean>();
 
 /**
  * Variable creator for string values.
  * ```ts
- * const template = prmpt`Hello ${prmpt.string("name")}!`
+ * const template = typelit`Hello ${typelit.string("name")}!`
  * template({ name: "Alice" }) // "Hello Alice!"
  * ```
  */
-prmpt.string = createType<string>();
+typelit.string = createType<string>();
 
 /**
  * Variable creator for number values.
  * ```ts
- * const template = prmpt`You are number ${prmpt.number("position")} in line`
+ * const template = typelit`You are number ${typelit.number("position")} in line`
  * template({ position: 3 }) // "You are number 3 in line"
  * ```
  */
-prmpt.number = createType<number>();
+typelit.number = createType<number>();
 
 /**
  * Variable creator for bigint values.
  * ```ts
- * const template = prmpt`Transaction ID: ${prmpt.bigint("id")}`
+ * const template = typelit`Transaction ID: ${typelit.bigint("id")}`
  * template({ id: 123456789n }) // "Transaction ID: 123456789"
  * ```
  */
-prmpt.bigint = createType<bigint>();
+typelit.bigint = createType<bigint>();
 
 /**
  * Variable creator for Date values.
  *
  * ```ts
- * const template = prmpt`Event date: ${prmpt.date("eventDate")}`
+ * const template = typelit`Event date: ${typelit.date("eventDate")}`
  * template({ eventDate: new Date("2023-05-15") }) // "Event date: Mon May 15 2023 00:00:00 GMT+0000 (Coordinated Universal Time)"
  * ```
  */
-prmpt.date = createType<Date>();
+typelit.date = createType<Date>();
 
 /**
  * Variable creator for any value type.
  * Stringifies the value to JSON with 2-space indentation.
  *
  * ```ts
- * const template = prmpt`Data: ${prmpt.json("data")}`
+ * const template = typelit`Data: ${typelit.json("data")}`
  * template({ data: { name: "Alice", age: 30 } })
  * // "Data: {
  * //   "name": "Alice",
@@ -226,6 +226,6 @@ prmpt.date = createType<Date>();
  * // }"
  * ```
  */
-prmpt.json = createType<any>({
+typelit.json = createType<any>({
   stringify: (obj) => JSON.stringify(obj, null, 2),
 });

@@ -1,11 +1,13 @@
-# prmpt
+# Typelit
+
+> "Type-safe template string literals"
 
 A type-safe string templating library for TypeScript that provides
 strongly-typed variable references with support for nested paths. Create
 template strings with compile-time type checking and automatic context type
 inference.
 
-`prmpt` allows you to write template strings that are both type-safe and easy to
+Typelit allows you to write template strings that are both type-safe and easy to
 read. Variables are referenced using a familiar template literal syntax while
 maintaining full type information about the required context object structure.
 
@@ -36,13 +38,13 @@ maintaining full type information about the required context object structure.
 Install using npm:
 
 ```bash
-npm install prmpt
+npm install typelit
 ```
 
 Or using yarn:
 
 ```bash
-yarn add prmpt
+yarn add typelit
 ```
 
 The library is available in multiple module formats to support different
@@ -51,23 +53,23 @@ environments:
 - CommonJS (Node.js):
 
 ```typescript
-const prmpt = require('prmpt');
-const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+const typelit = require('typelit');
+const greeting = typelit`Hello ${typelit.string('name')}!`;
 ```
 
 - ESM (Modern JavaScript):
 
 ```typescript
-import prmpt from 'prmpt';
-const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+import typelit from 'typelit';
+const greeting = typelit`Hello ${typelit.string('name')}!`;
 ```
 
 - UMD (Browser):
 
 ```html
-<script src="/path/to/prmpt.js"></script>
+<script src="/path/to/typelit.js"></script>
 <script>
-  const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+  const greeting = typelit`Hello ${typelit.string('name')}!`;
 </script>
 ```
 
@@ -80,14 +82,14 @@ automatically with all formats.
 First, import the library:
 
 ```typescript
-import prmpt from 'prmpt';
+import typelit from 'typelit';
 ```
 
 Let's start with a simple greeting template:
 
 ```typescript
 // Create a simple template with one variable
-const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+const greeting = typelit`Hello ${typelit.string('name')}!`;
 
 // Use the template with a context object
 const result = greeting({ name: 'Alice' }); // "Hello Alice!"
@@ -99,7 +101,7 @@ You can also create templates with nested variable paths:
 
 ```typescript
 // Create a template with nested variables
-const template = prmpt`Hello ${prmpt.string('user', 'name')}! You are ${prmpt.number('user', 'age')} years old.`;
+const template = typelit`Hello ${typelit.string('user', 'name')}! You are ${typelit.number('user', 'age')} years old.`;
 
 // TypeScript knows exactly what shape the context object needs to have
 const result = template({
@@ -120,7 +122,7 @@ template({
 
 ## Template Function
 
-The `prmpt` tag function creates template functions that evaluate a string
+The `typelit` tag function creates template functions that evaluate a string
 template using values from a context object. The template function takes a
 context object as input and returns the evaluated string with all variables
 replaced by their values.
@@ -130,7 +132,7 @@ object from the variables used in the template.
 
 ```typescript
 // Example showing type inference
-const welcome = prmpt`Welcome back, ${prmpt.string('username')}!`;
+const welcome = typelit`Welcome back, ${typelit.string('username')}!`;
 
 // TypeScript infers that the context must have a 'username' property
 welcome({ username: 'alice' }); // OK
@@ -140,12 +142,12 @@ welcome({ username: 123 }); // Type error: number is not assignable to string
 
 ### Features
 
-The `prmpt` function serves a dual purpose:
+The `typelit` function serves a dual purpose:
 
 1. As a template tag function that creates typed template functions
 2. As a namespace that provides variable creators (`string`, `number`, etc.)
 
-Template functions created with `prmpt` offer:
+Template functions created with `typelit` offer:
 
 - **Type Safety**: All variables are fully typed, ensuring you can't pass the
   wrong type of value.
@@ -154,9 +156,9 @@ Template functions created with `prmpt` offer:
 - **Composition**: Templates can be composed to build more complex strings:
 
 ```typescript
-const firstName = prmpt`${prmpt.string('user', 'firstName')}`;
-const lastName = prmpt`${prmpt.string('user', 'lastName')}`;
-const fullName = prmpt`${firstName} ${lastName}`;
+const firstName = typelit`${typelit.string('user', 'firstName')}`;
+const lastName = typelit`${typelit.string('user', 'lastName')}`;
+const fullName = typelit`${firstName} ${lastName}`;
 
 // Both templates require the same context structure
 firstName({ user: { firstName: 'John' } });
@@ -171,77 +173,77 @@ fullName({ user: { firstName: 'John', lastName: 'Doe' } });
 
 ## Variable Creators
 
-`prmpt` provides built-in variable creators for common data types. These are
+Typelit provides built-in variable creators for common data types. These are
 used to define variables in your templates with type-safe paths.
 
 ### String
 
-Use `prmpt.string()` to create string variables in your templates:
+Use `typelit.string()` to create string variables in your templates:
 
 ```typescript
 // Simple string variable
-const greeting = prmpt`Hello ${prmpt.string('name')}!`;
+const greeting = typelit`Hello ${typelit.string('name')}!`;
 greeting({ name: 'Alice' }); // "Hello Alice!"
 
 // Nested string variable
-const userEmail = prmpt`Contact: ${prmpt.string('user', 'email')}`;
+const userEmail = typelit`Contact: ${typelit.string('user', 'email')}`;
 userEmail({ user: { email: 'alice@example.com' } }); // "Contact: alice@example.com"
 ```
 
 ### Number
 
-Use `prmpt.number()` to create number variables:
+Use `typelit.number()` to create number variables:
 
 ```typescript
 // Simple number variable
-const age = prmpt`Age: ${prmpt.number('age')} years old`;
+const age = typelit`Age: ${typelit.number('age')} years old`;
 age({ age: 25 }); // "Age: 25 years old"
 
 // Nested number variable
-const score = prmpt`Score: ${prmpt.number('game', 'score')} points`;
+const score = typelit`Score: ${typelit.number('game', 'score')} points`;
 score({ game: { score: 100 } }); // "Score: 100 points"
 ```
 
 ### Boolean
 
-Use `prmpt.boolean()` to create boolean variables:
+Use `typelit.boolean()` to create boolean variables:
 
 ```typescript
 // Simple boolean variable
-const status = prmpt`Status: ${prmpt.boolean('isActive')}`;
+const status = typelit`Status: ${typelit.boolean('isActive')}`;
 status({ isActive: true }); // "Status: true"
 
 // Nested boolean variable
-const accountStatus = prmpt`Account active: ${prmpt.boolean('user', 'account', 'enabled')}`;
+const accountStatus = typelit`Account active: ${typelit.boolean('user', 'account', 'enabled')}`;
 accountStatus({ user: { account: { enabled: false } } }); // "Account active: false"
 ```
 
 ### BigInt
 
-Use `prmpt.bigint()` to create bigint variables:
+Use `typelit.bigint()` to create bigint variables:
 
 ```typescript
 // Simple bigint variable
-const id = prmpt`ID: ${prmpt.bigint('userId')}`;
+const id = typelit`ID: ${typelit.bigint('userId')}`;
 id({ userId: 9007199254740991n }); // "ID: 9007199254740991"
 
 // Nested bigint variable
-const transactionId = prmpt`Transaction: ${prmpt.bigint('payment', 'transactionId')}`;
+const transactionId = typelit`Transaction: ${typelit.bigint('payment', 'transactionId')}`;
 transactionId({ payment: { transactionId: 123456789n } }); // "Transaction: 123456789"
 ```
 
 ### Date
 
-Use `prmpt.date()` to create Date variables that automatically convert
+Use `typelit.date()` to create Date variables that automatically convert
 JavaScript Date objects to strings:
 
 ```typescript
 // Simple date variable
-const eventDate = prmpt`Event date: ${prmpt.date('date')}`;
+const eventDate = typelit`Event date: ${typelit.date('date')}`;
 eventDate({ date: new Date('2024-12-25') }); // "Event date: Wed Dec 25 2024 00:00:00 GMT+0000"
 
 // Nested date variable
-const appointmentTime = prmpt`Appointment scheduled for: ${prmpt.date('calendar', 'appointment')}`;
+const appointmentTime = typelit`Appointment scheduled for: ${typelit.date('calendar', 'appointment')}`;
 appointmentTime({
   calendar: { appointment: new Date('2024-12-25T15:30:00Z') },
 }); // "Appointment scheduled for: Wed Dec 25 2024 15:30:00 GMT+0000"
@@ -249,12 +251,12 @@ appointmentTime({
 
 ### JSON
 
-Use `prmpt.json()` to create variables that automatically stringify any value to
-JSON with proper formatting:
+Use `typelit.json()` to create variables that automatically stringify any value
+to JSON with proper formatting:
 
 ```typescript
 // Simple JSON variable
-const data = prmpt`Data: ${prmpt.json('config')}`;
+const data = typelit`Data: ${typelit.json('config')}`;
 data({ config: { enabled: true, count: 42 } });
 // "Data: {
 //   "enabled": true,
@@ -262,7 +264,7 @@ data({ config: { enabled: true, count: 42 } });
 // }"
 
 // Nested JSON variable
-const userProfile = prmpt`Profile: ${prmpt.json('user', 'profile')}`;
+const userProfile = typelit`Profile: ${typelit.json('user', 'profile')}`;
 userProfile({
   user: {
     profile: {
@@ -290,13 +292,13 @@ function. Here's a basic example creating a variable creator for JavaScript's
 `Date` type:
 
 ```typescript
-import { createType } from 'prmpt';
+import { createType } from 'typelit';
 
 // Create a variable creator for Date
-const prmptDate = createType<Date>();
+const typelitDate = createType<Date>();
 
 // Use it in a template
-const template = prmpt`Event starts at ${prmptDate('event', 'startTime')}`;
+const template = typelit`Event starts at ${typelitDate('event', 'startTime')}`;
 
 // The context object requires a Date instance
 const result = template({
@@ -328,7 +330,7 @@ Here are some examples of customizing string conversion:
 
 ```typescript
 // Custom date formatting
-const prmptDate = createType<Date>({
+const typelitDate = createType<Date>({
   stringify: (date) =>
     date.toLocaleDateString('en-US', {
       weekday: 'short',
@@ -338,11 +340,11 @@ const prmptDate = createType<Date>({
     }),
 });
 
-const event = prmpt`Event: ${prmptDate('date')}`;
+const event = typelit`Event: ${typelitDate('date')}`;
 event({ date: new Date('2024-12-25') }); // "Event: Wed, Dec 25, 2024"
 
 // Currency formatting
-const prmptPrice = createType<number>({
+const typelitPrice = createType<number>({
   stringify: (price) =>
     new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -350,16 +352,16 @@ const prmptPrice = createType<number>({
     }).format(price),
 });
 
-const price = prmpt`Total: ${prmptPrice('amount')}`;
+const price = typelit`Total: ${typelitPrice('amount')}`;
 price({ amount: 42.99 }); // "Total: $42.99"
 
 // Custom object formatting
 type User = { id: number; name: string };
-const prmptUser = createType<User>({
+const typelitUser = createType<User>({
   stringify: (user) => `#${user.id} ${user.name}`,
 });
 
-const user = prmpt`Created by: ${prmptUser('author')}`;
+const user = typelit`Created by: ${typelitUser('author')}`;
 user({ author: { id: 123, name: 'Alice' } }); // "Created by: #123 Alice"
 ```
 
