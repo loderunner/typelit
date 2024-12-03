@@ -1,3 +1,3 @@
-export { prmpt as default } from './prmpt';
+export { typelit as default } from './typelit';
 
-export type { PrmptFn, Var } from './prmpt';
+export type { TemplateFn, Var } from './typelit';

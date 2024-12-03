@@ -8,9 +8,9 @@ import {
   VarName,
   VarType,
   createType,
-} from './prmpt';
+} from './typelit';
 
-describe('prmpt types', () => {
+describe('typelit types', () => {
   it('Nested', () => {
     // No nested without an explicit list of keys
     expectTypeOf<Nested<string[], string>>().toBeNever();

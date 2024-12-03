@@ -24,7 +24,7 @@ export default [
       {
         file: packageJson.browser,
         format: 'umd',
-        name: 'prmpt',
+        name: 'typelit',
         sourcemap: true,
         plugins: [terser()],
       },

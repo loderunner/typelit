@@ -1,5 +1,5 @@
 {
-  "name": "prmpt",
+  "name": "typelit",
   "version": "0.1.0",
   "description": "A type-safe string templating library for TypeScript",
   "type": "module",
@@ -41,12 +41,12 @@
   "author": "Charles Francoise <charles.francoise@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loderunner/prmpt.git"
+    "url": "git+https://github.com/loderunner/typelit.git"
   },
   "bugs": {
-    "url": "https://github.com/loderunner/prmpt/issues"
+    "url": "https://github.com/loderunner/typelit/issues"
   },
-  "homepage": "https://github.com/loderunner/prmpt#readme",
+  "homepage": "https://github.com/loderunner/typelit#readme",
   "license": "Apache-2.0",
   "devDependencies": {
     "@eslint/js": "^9.16.0",
