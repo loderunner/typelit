@@ -67,7 +67,7 @@ const greeting = typelit`Hello ${typelit.string('name')}!`;
 - UMD (Browser):
 
 ```html
-<script src="/path/to/typelit.js"></script>
+<script src="https://unpkg.com/typelit"></script>
 <script>
   const greeting = typelit`Hello ${typelit.string('name')}!`;
 </script>
