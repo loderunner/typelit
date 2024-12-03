@@ -13,6 +13,27 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Release please
+        id: release
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
+      - name: Setup node
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        shell: sh
+        run: npm ci
+      - name: Publish to NPM registry
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm publish
+        shell: sh
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
