@@ -1,23 +1,52 @@
 {
   "name": "prmpt",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "A type-safe string templating library for TypeScript",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "browser": "dist/umd/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.test-d.ts"
   ],
   "scripts": {
     "lint": "prettier --check . && eslint --max-warnings=0",
     "test": "vitest",
     "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run lint && npm run test",
+    "prepack": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "typescript",
+    "template",
+    "templating",
+    "string-templates",
+    "string-interpolation",
+    "type-safe",
+    "type-inference",
+    "strongly-typed",
+    "string-formatting",
+    "string-manipulation",
+    "text-processing",
+    "interpolation",
+    "type-checking",
+    "zero-dependencies",
+    "zero-runtime"
+  ],
   "author": "Charles Francoise <charles.francoise@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loderunner/prmpt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/loderunner/prmpt/issues"
+  },
+  "homepage": "https://github.com/loderunner/prmpt#readme",
   "license": "Apache-2.0",
   "devDependencies": {
     "@eslint/js": "^9.16.0",
