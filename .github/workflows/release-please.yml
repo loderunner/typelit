@@ -34,7 +34,7 @@ jobs:
         run: npm ci
       - name: Publish to NPM registry
         if: ${{ steps.release.outputs.release_created }}
-        run: npm publish
+        run: |
+          npm set "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}"
+          npm publish
         shell: sh
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
