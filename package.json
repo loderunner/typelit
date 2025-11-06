@@ -1,6 +1,6 @@
 {
   "name": "typelit",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A type-safe string templating library for TypeScript",
   "type": "module",
   "main": "dist/cjs/index.cjs",
