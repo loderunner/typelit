@@ -15,21 +15,35 @@
  * // }
  * ```
  */
-export type Nested<Names extends string[], T> = Names extends [
-  infer Head extends string,
-]
-  ? { [K in Head]: T }
-  : Names extends [infer Head extends string, ...infer Rest extends string[]]
-    ? { [K in Head]: Nested<Rest, T> }
+type BuildNested<Path extends string[], T> = Path extends []
+  ? T
+  : Path extends [...infer Rest extends string[], infer Last extends string]
+    ? BuildNested<Rest, { [K in Last]: T }>
     : never;
+
+export type Nested<Names extends string[], T> = Names extends []
+  ? never
+  : string[] extends Names
+    ? never
+    : BuildNested<Names, T>;
 
 /**
  * Core prompt variable type that can extract a value from a nested context and
  * stringify it.
  */
+type ExtractCtx<Names extends string[], T> = Nested<Names, T> extends never
+  ? any
+  : Nested<Names, T>;
+
+type MutablePath<T extends readonly string[]> = [...T];
+
+type BivariantCallable<T extends (...args: any) => any> = {
+  bivarianceHack: T;
+}['bivarianceHack'];
+
 export type Var<Names extends string[], T> = {
-  _extract: (ctx: Nested<Names, T>) => T;
-  stringify: (value: T) => string;
+  _extract: BivariantCallable<(ctx: ExtractCtx<Names, T>) => T>;
+  stringify: BivariantCallable<(value: T) => string>;
 };
 
 /**
@@ -67,11 +81,13 @@ export type CreateOptions<T> = {
  * ```
  */
 export function createType<T>(options: CreateOptions<T> = {}) {
-  return function <Names extends string[]>(...names: Names): Var<Names, T> {
+  return function <const Names extends readonly string[]>(
+    ...names: MutablePath<Names>
+  ): Var<MutablePath<Names>, T> {
     return {
       _extract: (ctx) => names.reduce((obj, n) => obj[n], ctx as any),
       stringify: options.stringify ?? String,
-    };
+    } as Var<MutablePath<Names>, T>;
   };
 }
 
@@ -93,17 +109,29 @@ export type VarName<T> = T extends Var<infer VN, infer _VT> ? VN[0] : never;
  * // { name: string }
  * ```
  */
-export type VarType<T extends Var<string[], any>> =
+export type VarType<T extends Var<any, any>> =
   T extends Var<infer VN, infer VT>
-    ? VN extends [infer _Head extends string]
-      ? VT
-      : VN extends [infer _Head extends string, ...infer Rest extends string[]]
-        ? Nested<Rest, VT>
-        : never
+    ? VN extends []
+      ? never
+      : string[] extends VN
+        ? never
+        : VN extends [infer _Head extends string, ...infer Rest extends string[]]
+          ? Rest extends []
+            ? VT
+            : Nested<Rest, VT>
+          : never
     : never;
 
 /** Base type that all arrays of Var extend */
-type VarList = Var<string[], any>[];
+type VarList = readonly Var<any, any>[];
+
+type VarContext<V extends Var<any, any>> = V extends Var<infer Names, infer T>
+  ? Nested<Names, T>
+  : never;
+
+type VarsContext<Vars extends VarList> = Vars[number] extends never
+  ? {}
+  : UnionToIntersection<VarContext<Vars[number]>>;
 
 /**
  * Converts a union type to an intersection type.
@@ -136,9 +164,7 @@ type Prettify<T> = {
  * // { user: { name: string; age: number } }
  * ```
  */
-export type Context<Vars extends VarList> = Prettify<{
-  [K in Vars[number] as VarName<K>]: UnionToIntersection<VarType<K>>;
-}>;
+export type Context<Vars extends VarList> = Prettify<VarsContext<Vars>>;
 
 /**
  * Represents a function that takes a context object and returns a string.
@@ -155,13 +181,12 @@ export type TemplateFn<Vars extends VarList> = (ctx: Context<Vars>) => string;
  * const result = template({ user: { name: "Alice" } }); // "Hello Alice!"
  * ```
  */
-export function typelit<Vars extends VarList>(
+export function typelit<const Vars extends VarList>(
   strings: TemplateStringsArray,
   ...vars: Vars
 ): TemplateFn<Vars> {
   return (ctx: Context<Vars>) =>
     vars.reduce<string>(
-      // @ts-expect-error type of `v` loses specificity during iteration
       (acc, v, i) => acc + v.stringify(v._extract(ctx)) + strings[i + 1],
       strings[0],
     );
