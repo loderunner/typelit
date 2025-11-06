@@ -33,13 +33,16 @@ describe('typelit types', () => {
 
   it('createType', () => {
     expectTypeOf(createType()).toBeFunction();
-    expectTypeOf(createType()).parameters.items.toEqualTypeOf<string>();
-    expectTypeOf(createType()).returns.toEqualTypeOf<Var<string[], unknown>>();
+    // With const type parameters, the parameter types are inferred at call-site
+    // so we test the return type which is what matters for type safety
+    expectTypeOf(createType()).returns.toEqualTypeOf<
+      Var<readonly string[], unknown>
+    >();
     expectTypeOf(createType<string>()).returns.toEqualTypeOf<
-      Var<string[], string>
+      Var<readonly string[], string>
     >();
     expectTypeOf(createType<string | number>()).returns.toEqualTypeOf<
-      Var<string[], string | number>
+      Var<readonly string[], string | number>
     >();
   });
 

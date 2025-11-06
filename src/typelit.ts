@@ -19,7 +19,10 @@ export type Nested<Names extends readonly string[], T> = Names extends [
   infer Head extends string,
 ]
   ? { [K in Head]: T }
-  : Names extends [infer Head extends string, ...infer Rest extends readonly string[]]
+  : Names extends [
+        infer Head extends string,
+        ...infer Rest extends readonly string[],
+      ]
     ? { [K in Head]: Nested<Rest, T> }
     : never;
 
@@ -67,7 +70,9 @@ export type CreateOptions<T> = {
  * ```
  */
 export function createType<T>(options: CreateOptions<T> = {}) {
-  return function <const Names extends readonly string[]>(...names: Names): Var<Names, T> {
+  return function <const Names extends readonly string[]>(
+    ...names: Names
+  ): Var<Names, T> {
     return {
       _extract: (ctx) => names.reduce((obj, n) => obj[n], ctx as any),
       stringify: options.stringify ?? String,
@@ -97,7 +102,10 @@ export type VarType<T extends Var<readonly string[], any>> =
   T extends Var<infer VN, infer VT>
     ? VN extends [infer _Head extends string]
       ? VT
-      : VN extends [infer _Head extends string, ...infer Rest extends readonly string[]]
+      : VN extends [
+            infer _Head extends string,
+            ...infer Rest extends readonly string[],
+          ]
         ? Nested<Rest, VT>
         : never
     : never;
