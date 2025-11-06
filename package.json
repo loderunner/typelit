@@ -49,22 +49,22 @@
   "homepage": "https://github.com/loderunner/typelit#readme",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@eslint/js": "9.38.0",
+    "@eslint/js": "9.39.1",
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.3.0",
-    "eslint": "9.38.0",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-jsdoc": "50.6.0",
-    "globals": "15.13.0",
+    "eslint-plugin-jsdoc": "61.1.12",
+    "globals": "16.5.0",
     "prettier": "3.6.2",
     "rimraf": "6.1.0",
     "rollup": "4.52.5",
     "rollup-plugin-dts": "6.2.3",
     "tslib": "2.8.1",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.46.2",
-    "vitest": "3.2.4"
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.46.3",
+    "vitest": "4.0.7"
   }
 }
