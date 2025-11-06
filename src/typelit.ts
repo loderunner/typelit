@@ -128,6 +128,25 @@ type Prettify<T> = {
 } & {};
 
 /**
+ * Helper to collect VarType values for variables with a specific first name.
+ * This works around TypeScript 5.9's stricter handling of mapped types with duplicate keys.
+ * The key insight is that we need to ensure the conditional type distributes over the union
+ * to collect all matching VarType values before intersecting them.
+ */
+type CollectTypesForName<
+  Vars extends VarList,
+  Name extends string,
+> = Vars[number] extends infer V
+  ? V extends Var<string[], any>
+    ? [VarName<V>] extends [Name]
+      ? [Name] extends [VarName<V>]
+        ? VarType<V>
+        : never
+      : never
+    : never
+  : never;
+
+/**
  * Represents a context object that contains all variables needed for a prompt template.
  * Variables with the same first path segment are grouped together under a single property.
  *
@@ -137,7 +156,7 @@ type Prettify<T> = {
  * ```
  */
 export type Context<Vars extends VarList> = Prettify<{
-  [K in Vars[number] as VarName<K>]: UnionToIntersection<VarType<K>>;
+  [K in Vars[number] as VarName<K>]: UnionToIntersection<CollectTypesForName<Vars, VarName<K>>>;
 }>;
 
 /**
