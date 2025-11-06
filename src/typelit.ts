@@ -15,11 +15,11 @@
  * // }
  * ```
  */
-export type Nested<Names extends string[], T> = Names extends [
+export type Nested<Names extends readonly string[], T> = Names extends [
   infer Head extends string,
 ]
   ? { [K in Head]: T }
-  : Names extends [infer Head extends string, ...infer Rest extends string[]]
+  : Names extends [infer Head extends string, ...infer Rest extends readonly string[]]
     ? { [K in Head]: Nested<Rest, T> }
     : never;
 
@@ -27,7 +27,7 @@ export type Nested<Names extends string[], T> = Names extends [
  * Core prompt variable type that can extract a value from a nested context and
  * stringify it.
  */
-export type Var<Names extends string[], T> = {
+export type Var<Names extends readonly string[], T> = {
   _extract: (ctx: Nested<Names, T>) => T;
   stringify: (value: T) => string;
 };
@@ -67,7 +67,7 @@ export type CreateOptions<T> = {
  * ```
  */
 export function createType<T>(options: CreateOptions<T> = {}) {
-  return function <Names extends string[]>(...names: Names): Var<Names, T> {
+  return function <const Names extends readonly string[]>(...names: Names): Var<Names, T> {
     return {
       _extract: (ctx) => names.reduce((obj, n) => obj[n], ctx as any),
       stringify: options.stringify ?? String,
@@ -93,17 +93,17 @@ export type VarName<T> = T extends Var<infer VN, infer _VT> ? VN[0] : never;
  * // { name: string }
  * ```
  */
-export type VarType<T extends Var<string[], any>> =
+export type VarType<T extends Var<readonly string[], any>> =
   T extends Var<infer VN, infer VT>
     ? VN extends [infer _Head extends string]
       ? VT
-      : VN extends [infer _Head extends string, ...infer Rest extends string[]]
+      : VN extends [infer _Head extends string, ...infer Rest extends readonly string[]]
         ? Nested<Rest, VT>
         : never
     : never;
 
 /** Base type that all arrays of Var extend */
-type VarList = Var<string[], any>[];
+type VarList = Var<readonly string[], any>[];
 
 /**
  * Converts a union type to an intersection type.
@@ -128,6 +128,14 @@ type Prettify<T> = {
 } & {};
 
 /**
+ * Helper type that distributes over a union of Vars and extracts VarType for vars matching a specific key.
+ */
+type ExtractVarTypesForKey<
+  V extends Var<readonly string[], any>,
+  Key extends string,
+> = V extends any ? (VarName<V> extends Key ? VarType<V> : never) : never;
+
+/**
  * Represents a context object that contains all variables needed for a prompt template.
  * Variables with the same first path segment are grouped together under a single property.
  *
@@ -137,7 +145,9 @@ type Prettify<T> = {
  * ```
  */
 export type Context<Vars extends VarList> = Prettify<{
-  [K in Vars[number] as VarName<K>]: UnionToIntersection<VarType<K>>;
+  [Key in VarName<Vars[number]>]: UnionToIntersection<
+    ExtractVarTypesForKey<Vars[number], Key>
+  >;
 }>;
 
 /**
@@ -155,7 +165,7 @@ export type TemplateFn<Vars extends VarList> = (ctx: Context<Vars>) => string;
  * const result = template({ user: { name: "Alice" } }); // "Hello Alice!"
  * ```
  */
-export function typelit<Vars extends VarList>(
+export function typelit<const Vars extends VarList>(
   strings: TemplateStringsArray,
   ...vars: Vars
 ): TemplateFn<Vars> {
