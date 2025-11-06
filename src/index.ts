@@ -1,3 +1,3 @@
-export { typelit as default } from './typelit';
+export { typelit as default, createType } from './typelit';
 
 export type { TemplateFn, Var } from './typelit';
