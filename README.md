@@ -17,6 +17,13 @@ Typelit allows you to write template strings that are both type-safe and easy to
 read. Variables are referenced using a familiar template literal syntax while
 maintaining full type information about the required context object structure.
 
+## Examples
+
+- `examples/email-templates` – transactional emails with currency/date
+  formatting.
+- `examples/ai-prompts` – type-safe AI prompt generation (summaries, code
+  review, creative writing, analytics, support) with reusable building blocks.
+
 ## Table of contents
 
 - [Getting Started](#getting-started)
