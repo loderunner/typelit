@@ -16,7 +16,7 @@ import {
  */
 
 // Generate type-safe prompts
-const system = systemPrompt({});
+const system = systemPrompt({ code: sampleCode });
 const user = userPrompt({
   code: sampleCode,
   review: sampleReview,

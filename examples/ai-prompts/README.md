@@ -17,6 +17,5 @@ Each file demonstrates a different prompt scenario:
 
 - `content-summarization.ts` - Article summarization with length/style
   preferences
-- `code-review.ts` - Code review prompts that adapt to developer experience
-  level
+- `code-review.ts` - Code review with separate system and user prompts
 - `index.ts` - Live example calling OpenAI API with type-safe prompts

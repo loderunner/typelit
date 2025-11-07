@@ -23,7 +23,7 @@ type ReviewCriteria = {
   checkForIssues: string[];
 };
 
-export const systemPrompt = typelit`You are an expert code reviewer providing constructive feedback.`;
+export const systemPrompt = typelit`You are an expert ${typelit.string('code', 'language')} code reviewer providing constructive feedback.`;
 
 export const userPrompt = typelit`Language: ${typelit.string('code', 'language')}
 
@@ -72,7 +72,7 @@ export const sampleReview: ReviewCriteria = {
 };
 
 // Example usage
-// const system = systemPrompt({});
+// const system = systemPrompt({ code: sampleCode });
 // const user = userPrompt({
 //   code: sampleCode,
 //   review: sampleReview,
