@@ -2,7 +2,7 @@ import { createType, typelit } from '../../src/typelit';
 
 /**
  * Order Confirmation Email Example
- * 
+ *
  * Demonstrates:
  * - Deeply nested paths (order.shippingAddress.city)
  * - Custom currency formatter

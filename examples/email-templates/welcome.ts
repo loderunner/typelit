@@ -2,7 +2,7 @@ import { typelit } from '../../src/typelit';
 
 /**
  * Welcome Email Example
- * 
+ *
  * Demonstrates:
  * - Nested paths (user.firstName, user.email)
  * - Basic string interpolation

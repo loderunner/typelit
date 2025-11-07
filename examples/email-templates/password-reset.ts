@@ -2,7 +2,7 @@ import { createType, typelit } from '../../src/typelit';
 
 /**
  * Password Reset Email Example
- * 
+ *
  * Demonstrates:
  * - Custom date formatter
  * - Multiple date fields
