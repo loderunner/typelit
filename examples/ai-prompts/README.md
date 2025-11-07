@@ -19,8 +19,6 @@ Each file demonstrates a different prompt scenario:
 - `code-review.ts` - Code review prompts that adapt to developer experience
   level
 - `data-analysis.ts` - Complex dataset analysis requests with optional fields
-- `customer-support.ts` - Customer support responses with company tone
-  guidelines
 - `index.ts` - Live example calling OpenAI API with type-safe prompts
 
 ## Basic Usage
