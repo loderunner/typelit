@@ -46,7 +46,6 @@ const samplePasswordReset: PasswordReset = {
 };
 
 export function runPasswordResetExample() {
-  console.log('\n=== Password Reset ===');
   console.log(
     passwordResetEmail({
       user: sampleUser,

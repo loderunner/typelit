@@ -99,7 +99,6 @@ const sampleOrder: Order = {
 };
 
 export function runOrderConfirmationExample() {
-  console.log('\n=== Order Confirmation ===');
   console.log(
     orderConfirmationEmail({
       user: sampleUser,

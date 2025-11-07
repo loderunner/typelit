@@ -29,7 +29,6 @@ const sampleUser: User = {
 };
 
 export function runWelcomeExample() {
-  console.log('=== Welcome Email ===');
   console.log(
     welcomeEmail({
       user: sampleUser,
