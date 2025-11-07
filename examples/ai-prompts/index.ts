@@ -16,13 +16,6 @@ import {
   styleGuideNote,
 } from './code-review';
 import {
-  creativeWritingPrompt,
-  samplePlot,
-  samplePreferences as writingPreferences,
-  sampleProtagonist,
-  sampleWorld,
-} from './creative-writing';
-import {
   dataAnalysisPrompt,
   formatFocusAreas,
   formatHypotheses,
@@ -157,21 +150,8 @@ console.log(seniorReviewPrompt);
 console.log();
 console.log();
 
-// Example 4: Creative Writing
-console.log('✍️ EXAMPLE 4: CREATIVE WRITING HELPER');
-console.log('-'.repeat(80));
-const writingPrompt = creativeWritingPrompt({
-  preferences: writingPreferences,
-  protagonist: sampleProtagonist,
-  world: sampleWorld,
-  plot: samplePlot,
-});
-console.log(writingPrompt);
-console.log();
-console.log();
-
-// Example 5: Data Analysis
-console.log('📊 EXAMPLE 5: DATA ANALYSIS');
+// Example 4: Data Analysis
+console.log('📊 EXAMPLE 4: DATA ANALYSIS');
 console.log('-'.repeat(80));
 const analysisPrompt = dataAnalysisPrompt({
   dataset: sampleDataset,
@@ -185,8 +165,8 @@ console.log(analysisPrompt);
 console.log();
 console.log();
 
-// Example 6: Customer Support (Technical Issue)
-console.log('🎧 EXAMPLE 6: CUSTOMER SUPPORT - TECHNICAL ISSUE');
+// Example 5: Customer Support (Technical Issue)
+console.log('🎧 EXAMPLE 5: CUSTOMER SUPPORT - TECHNICAL ISSUE');
 console.log('-'.repeat(80));
 const supportPrompt = customerSupportPrompt({
   ticket: sampleTicket,
@@ -201,8 +181,8 @@ console.log(supportPrompt);
 console.log();
 console.log();
 
-// Example 7: Customer Support (Billing Inquiry)
-console.log('💳 EXAMPLE 7: CUSTOMER SUPPORT - BILLING INQUIRY');
+// Example 6: Customer Support (Billing Inquiry)
+console.log('💳 EXAMPLE 6: CUSTOMER SUPPORT - BILLING INQUIRY');
 console.log('-'.repeat(80));
 const billingSupportPrompt = customerSupportPrompt({
   ticket: sampleTicketBilling,

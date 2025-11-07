@@ -123,53 +123,7 @@ const seniorReview = codeReviewPrompt({
 
 **The Magic:** Same template, different contexts, zero runtime errors.
 
-### 3. Creative Writing Helper ✍️
-Complex nested structures for character details, world-building, and plot elements.
-
-**Deep Nesting Example:**
-```typescript
-type Character = {
-  name: string;
-  background: {
-    occupation: string;
-    personality: string[];
-    motivations: string;
-    fears: string;
-  };
-  appearance: {
-    physicalDescription: string;
-    distinctiveFeatures: string[];
-  };
-  relationships: {
-    allies?: string[];
-    enemies?: string[];
-    complicated?: string[];
-  };
-};
-```
-
-**Access Nested Paths Safely:**
-```typescript
-const writingPrompt = typelit`
-Protagonist: ${typelit.string('protagonist', 'name')}
-Age: ${typelit.number('protagonist', 'age')}
-
-Background:
-- Occupation: ${typelit.string('protagonist', 'background', 'occupation')}
-- Motivation: ${typelit.string('protagonist', 'background', 'motivations')}
-- Deepest Fear: ${typelit.string('protagonist', 'background', 'fears')}
-
-Relationships:
-${typelit.json('protagonist', 'relationships')}
-
-Setting: ${typelit.string('world', 'setting', 'location')}
-Time Period: ${typelit.string('world', 'setting', 'timePeriod')}
-`;
-```
-
-TypeScript validates every nested path. Change your data structure? TypeScript tells you every template that needs updating.
-
-### 4. Data Analysis 📊
+### 3. Data Analysis 📊
 Structure complex analysis requests with dataset descriptions, goals, and output preferences.
 
 **Handles Optional Fields Gracefully:**
@@ -202,7 +156,7 @@ const prompt = dataAnalysisPrompt({
 });
 ```
 
-### 5. Customer Support 🎧
+### 4. Customer Support 🎧
 Consistent brand voice with priority handling and product context.
 
 **Multi-Level Context:**
@@ -585,7 +539,6 @@ Each example is self-contained:
 
 - `content-summarization.ts` - Article summarization with preferences
 - `code-review.ts` - Code review with experience-based configuration  
-- `creative-writing.ts` - Rich nested character and world-building
 - `data-analysis.ts` - Complex dataset analysis with goals
 - `customer-support.ts` - Support responses with company guidelines
 - `index.ts` - Runs all examples with custom formatters
@@ -597,7 +550,7 @@ Each example is self-contained:
 npx tsx examples/ai-prompts/index.ts
 
 # Examine individual templates
-cat examples/ai-prompts/creative-writing.ts
+cat examples/ai-prompts/code-review.ts
 ```
 
 ## The Bottom Line
