@@ -386,6 +386,8 @@ You might want to provide a custom `stringify` function when:
 - Adding prefixes, suffixes, or other decorations to values
 - Internationalizing or localizing output
 
+See the [examples directory](./examples) for practical examples.
+
 ## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md)
