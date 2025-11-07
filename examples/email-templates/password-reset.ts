@@ -29,7 +29,7 @@ type PasswordReset = {
   expiresAt: Date;
 };
 
-const passwordResetEmail = typelit`
+export const passwordResetEmail = typelit`
 Hi ${typelit.string('user', 'firstName')},
 
 Reset your password: ${typelit.string('resetUrl')}
@@ -37,20 +37,10 @@ Reset your password: ${typelit.string('resetUrl')}
 This link expires on ${typelitDate('passwordReset', 'expiresAt')}.
 `;
 
-const sampleUser: User = {
+export const sampleUser: User = {
   firstName: 'Alice',
 };
 
-const samplePasswordReset: PasswordReset = {
+export const samplePasswordReset: PasswordReset = {
   expiresAt: new Date('2024-01-16T14:30:00Z'),
 };
-
-export function runPasswordResetExample() {
-  console.log(
-    passwordResetEmail({
-      user: sampleUser,
-      passwordReset: samplePasswordReset,
-      resetUrl: 'https://example.com/reset?token=abc123',
-    }),
-  );
-}

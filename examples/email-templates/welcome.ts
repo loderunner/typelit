@@ -14,25 +14,15 @@ type User = {
   email: string;
 };
 
-const welcomeEmail = typelit`
+export const welcomeEmail = typelit`
 Welcome, ${typelit.string('user', 'firstName')}!
 
 Your account has been created. Email: ${typelit.string('user', 'email')}
 
 Visit your dashboard: ${typelit.string('dashboardUrl')}
 `;
-
-const sampleUser: User = {
+export const sampleUser: User = {
   firstName: 'Alice',
   lastName: 'Johnson',
   email: 'alice@example.com',
 };
-
-export function runWelcomeExample() {
-  console.log(
-    welcomeEmail({
-      user: sampleUser,
-      dashboardUrl: 'https://example.com/dashboard',
-    }),
-  );
-}

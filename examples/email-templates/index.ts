@@ -1,9 +1,33 @@
-import { runOrderConfirmationExample } from './order-confirmation';
-import { runPasswordResetExample } from './password-reset';
-import { runWelcomeExample } from './welcome';
+import {
+  orderConfirmationEmail,
+  sampleOrder as orderSampleOrder,
+  sampleUser as orderSampleUser,
+} from './order-confirmation';
+import {
+  passwordResetEmail,
+  samplePasswordReset,
+  sampleUser as passwordResetSampleUser,
+} from './password-reset';
+import { sampleUser, welcomeEmail } from './welcome';
 
-runWelcomeExample();
+console.log(
+  welcomeEmail({
+    user: sampleUser,
+    dashboardUrl: 'https://example.com/dashboard',
+  }),
+);
 console.log('------------------------------------------------------------');
-runOrderConfirmationExample();
+console.log(
+  orderConfirmationEmail({
+    user: orderSampleUser,
+    order: orderSampleOrder,
+  }),
+);
 console.log('------------------------------------------------------------');
-runPasswordResetExample();
+console.log(
+  passwordResetEmail({
+    user: passwordResetSampleUser,
+    passwordReset: samplePasswordReset,
+    resetUrl: 'https://example.com/reset?token=abc123',
+  }),
+);

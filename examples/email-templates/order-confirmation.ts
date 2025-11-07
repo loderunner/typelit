@@ -59,7 +59,7 @@ type User = {
   firstName: string;
 };
 
-const orderConfirmationEmail = typelit`
+export const orderConfirmationEmail = typelit`
 Hi ${typelit.string('user', 'firstName')},
 
 Order #${typelit.string('order', 'id')}
@@ -76,11 +76,11 @@ ${typelit.string('order', 'shippingAddress', 'street')}
 ${typelit.string('order', 'shippingAddress', 'city')}, ${typelit.string('order', 'shippingAddress', 'state')} ${typelit.string('order', 'shippingAddress', 'zipCode')}
 `;
 
-const sampleUser: User = {
+export const sampleUser: User = {
   firstName: 'Alice',
 };
 
-const sampleOrder: Order = {
+export const sampleOrder: Order = {
   id: 'ORD-2024-001234',
   orderDate: new Date('2024-01-15T14:30:00Z'),
   items: [
@@ -97,12 +97,3 @@ const sampleOrder: Order = {
     zipCode: '10001',
   },
 };
-
-export function runOrderConfirmationExample() {
-  console.log(
-    orderConfirmationEmail({
-      user: sampleUser,
-      order: sampleOrder,
-    }),
-  );
-}
