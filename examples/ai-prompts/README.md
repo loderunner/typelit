@@ -4,11 +4,12 @@ Examples showing how to use Typelit for type-safe LLM prompt generation.
 
 ## Quick Start
 
+Requires `OPENAI_API_KEY` environment variable:
+
 ```bash
+export OPENAI_API_KEY=your-api-key
 npx tsx examples/ai-prompts/index.ts
 ```
-
-Set `OPENAI_API_KEY` to see a live example with OpenAI.
 
 ## Examples
 
