@@ -34,7 +34,6 @@ maintaining full type information about the required context object structure.
   - [JSON](#json)
 - [Custom Variable Creators](#custom-variable-creators)
   - [Customizing String Conversion](#customizing-string-conversion)
-- [Examples](#examples)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -387,9 +386,7 @@ You might want to provide a custom `stringify` function when:
 - Adding prefixes, suffixes, or other decorations to values
 - Internationalizing or localizing output
 
-## Examples
-
-Check out the [examples directory](./examples) for practical examples demonstrating Typelit's features, including email templates with custom formatters and nested data structures.
+See the [examples directory](./examples) for practical examples.
 
 ## Contributing
 
