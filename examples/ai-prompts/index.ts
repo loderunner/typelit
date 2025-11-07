@@ -2,10 +2,8 @@ import { createType } from '../../src/typelit';
 
 import {
   codeReviewPrompt,
-  sampleCodeJunior,
-  sampleReviewJunior,
-  sampleUserJunior,
-  styleGuideNote,
+  sampleCode,
+  sampleReview,
 } from './code-review';
 
 /**
