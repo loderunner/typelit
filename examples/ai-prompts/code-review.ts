@@ -72,7 +72,7 @@ export const sampleReview: ReviewCriteria = {
 };
 
 // Example usage
-// const system = systemPrompt({ code: sampleCode });
+// const system = systemPrompt({ code: { language: 'typescript' } });
 // const user = userPrompt({
 //   code: sampleCode,
 //   review: sampleReview,
