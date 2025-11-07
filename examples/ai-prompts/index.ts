@@ -15,43 +15,24 @@ const prompt = codeReviewPrompt({
   review: sampleReview,
 });
 
-console.log('Generated Prompt:');
-console.log('='.repeat(80));
-console.log(prompt);
-console.log('='.repeat(80));
-console.log();
-
 // Example with OpenAI (requires OPENAI_API_KEY in environment)
 if (process.env.OPENAI_API_KEY) {
-  try {
-    const openai = new OpenAI();
+  const openai = new OpenAI();
 
-    console.log('Sending to OpenAI...');
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are an expert code reviewer.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-    });
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are an expert code reviewer.',
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.7,
+  });
 
-    console.log('\nOpenAI Response:');
-    console.log('-'.repeat(80));
-    console.log(completion.choices[0].message.content);
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error('Error calling OpenAI:', error.message);
-    }
-  }
-} else {
-  console.log(
-    'Set OPENAI_API_KEY environment variable to test with OpenAI API',
-  );
+  console.log(completion.choices[0].message.content);
 }
