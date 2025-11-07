@@ -22,7 +22,6 @@ const user = userPrompt({
   review: sampleReview,
 });
 
-// Call OpenAI API
 const openai = new OpenAI();
 
 const completion = await openai.chat.completions.create({
