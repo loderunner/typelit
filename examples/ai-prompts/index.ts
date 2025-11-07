@@ -1,3 +1,5 @@
+import OpenAI from 'openai';
+
 import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
 
 /**
@@ -23,8 +25,6 @@ async function main() {
   // Example with OpenAI (requires OPENAI_API_KEY in environment)
   if (process.env.OPENAI_API_KEY) {
     try {
-      // Dynamic import to avoid requiring openai as a dependency
-      const { default: OpenAI } = await import('openai');
       const openai = new OpenAI();
 
       console.log('Sending to OpenAI...');
