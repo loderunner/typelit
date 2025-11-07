@@ -1,6 +1,11 @@
 import OpenAI from 'openai';
 
-import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
+import {
+  sampleCode,
+  sampleReview,
+  systemPrompt,
+  userPrompt,
+} from './code-review';
 
 /**
  * AI Prompt Generation Examples
@@ -10,8 +15,9 @@ import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
  * Run with: npx tsx examples/ai-prompts/index.ts
  */
 
-// Generate type-safe prompt
-const prompt = codeReviewPrompt({
+// Generate type-safe prompts
+const system = systemPrompt({});
+const user = userPrompt({
   code: sampleCode,
   review: sampleReview,
 });
@@ -24,11 +30,11 @@ const completion = await openai.chat.completions.create({
   messages: [
     {
       role: 'system',
-      content: 'You are an expert code reviewer.',
+      content: system,
     },
     {
       role: 'user',
-      content: prompt,
+      content: user,
     },
   ],
   temperature: 0.7,

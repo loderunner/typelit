@@ -4,6 +4,7 @@ import { typelit } from '../../src/typelit';
  * Code Review Assistant Example
  *
  * Demonstrates:
+ * - Separate system and user prompt templates
  * - Nested context for code properties
  * - Type-safe handling of review focus areas
  * - JSON formatting for structured data
@@ -22,9 +23,9 @@ type ReviewCriteria = {
   checkForIssues: string[];
 };
 
-export const codeReviewPrompt = typelit`You are an expert code reviewer providing constructive feedback.
+export const systemPrompt = typelit`You are an expert code reviewer providing constructive feedback.`;
 
-Language: ${typelit.string('code', 'language')}
+export const userPrompt = typelit`Language: ${typelit.string('code', 'language')}
 
 Code to review:
 \`\`\`${typelit.string('code', 'language')}
@@ -71,7 +72,8 @@ export const sampleReview: ReviewCriteria = {
 };
 
 // Example usage
-// const prompt = codeReviewPrompt({
+// const system = systemPrompt({});
+// const user = userPrompt({
 //   code: sampleCode,
 //   review: sampleReview,
 // });
