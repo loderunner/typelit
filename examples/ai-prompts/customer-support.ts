@@ -17,7 +17,12 @@ type TicketCategory =
   | 'feature-request'
   | 'bug-report'
   | 'general-inquiry';
-type CompanyTone = 'professional' | 'friendly' | 'casual' | 'empathetic' | 'formal';
+type CompanyTone =
+  | 'professional'
+  | 'friendly'
+  | 'casual'
+  | 'empathetic'
+  | 'formal';
 
 type CustomerTicket = {
   id: string;

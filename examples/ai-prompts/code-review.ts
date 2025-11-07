@@ -123,7 +123,8 @@ export const sampleCodeSenior: CodeSnippet = {
       .map(transformer)
   );
 }`,
-  context: 'Generic utility for validating and transforming user data with async operations.',
+  context:
+    'Generic utility for validating and transforming user data with async operations.',
   filePath: 'File: src/users/processing.ts',
 };
 

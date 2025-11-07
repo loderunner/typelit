@@ -69,7 +69,8 @@ export const samplePreferences: SummaryPreferences = {
   audience: 'technical',
 };
 
-export const additionalInstructions = 'Focus on practical implications for software development teams.';
+export const additionalInstructions =
+  'Focus on practical implications for software development teams.';
 
 // Example usage
 // const prompt = summarizationPrompt({

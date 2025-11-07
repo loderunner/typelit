@@ -1,48 +1,18 @@
 import { createType } from '../../src/typelit';
-import {
-  additionalInstructions,
-  sampleArticle,
-  samplePreferences as summaryPreferences,
-  summarizationPrompt,
-} from './content-summarization';
+
 import {
   codeReviewPrompt,
   sampleCodeJunior,
-  sampleCodeSenior,
   sampleReviewJunior,
-  sampleReviewSenior,
   sampleUserJunior,
-  sampleUserSenior,
   styleGuideNote,
 } from './code-review';
-import {
-  dataAnalysisPrompt,
-  formatFocusAreas,
-  formatHypotheses,
-  formatTimeRange,
-  sampleDataset,
-  sampleGoals,
-  samplePreferences as analysisPreferences,
-} from './data-analysis';
-import {
-  customerSupportPrompt,
-  formatEscalation,
-  formatKnownIssues,
-  formatRecentUpdates,
-  sampleCustomer,
-  sampleCustomerBilling,
-  sampleGuidelines,
-  sampleGuidelinesFriendly,
-  sampleProduct,
-  sampleTicket,
-  sampleTicketBilling,
-} from './customer-support';
 
 /**
  * AI Prompt Generation Examples
  *
- * This file demonstrates custom formatters for AI-specific use cases
- * and runs all the example prompts.
+ * Demonstrates using Typelit with OpenAI's API.
+ * Run with: npx tsx examples/ai-prompts/index.ts
  */
 
 // ============================================================================
@@ -78,7 +48,6 @@ export const typelitTemperature = createType<number>({
  */
 export const typelitMarkdown = createType<string>({
   stringify: (markdown) => {
-    // Ensure code blocks are properly formatted
     return markdown.trim();
   },
 });
@@ -103,108 +72,60 @@ export const typelitCurrency = createType<number>({
 });
 
 // ============================================================================
-// Run Examples
+// Example: Code Review with OpenAI
 // ============================================================================
 
-console.log('='.repeat(80));
-console.log('AI PROMPT GENERATION EXAMPLES');
-console.log('Demonstrating type-safe, reusable prompt templates');
-console.log('='.repeat(80));
-console.log();
+async function main() {
+  // Generate type-safe prompt
+  const prompt = codeReviewPrompt({
+    code: sampleCodeJunior,
+    user: sampleUserJunior,
+    review: sampleReviewJunior,
+    styleGuideNote: styleGuideNote(sampleReviewJunior.styleGuide),
+  });
 
-// Example 1: Content Summarization
-console.log('📄 EXAMPLE 1: CONTENT SUMMARIZATION');
-console.log('-'.repeat(80));
-const summaryPrompt = summarizationPrompt({
-  article: sampleArticle,
-  preferences: summaryPreferences,
-  additionalInstructions,
-});
-console.log(summaryPrompt);
-console.log();
-console.log();
+  console.log('Generated Prompt:');
+  console.log('='.repeat(80));
+  console.log(prompt);
+  console.log('='.repeat(80));
+  console.log();
 
-// Example 2: Code Review (Junior Developer)
-console.log('👨‍💻 EXAMPLE 2: CODE REVIEW - JUNIOR DEVELOPER');
-console.log('-'.repeat(80));
-const juniorReviewPrompt = codeReviewPrompt({
-  code: sampleCodeJunior,
-  user: sampleUserJunior,
-  review: sampleReviewJunior,
-  styleGuideNote: styleGuideNote(sampleReviewJunior.styleGuide),
-});
-console.log(juniorReviewPrompt);
-console.log();
-console.log();
+  // Example with OpenAI (requires OPENAI_API_KEY in environment)
+  if (process.env.OPENAI_API_KEY) {
+    try {
+      // Dynamic import to avoid requiring openai as a dependency
+      const { default: OpenAI } = await import('openai');
+      const openai = new OpenAI();
 
-// Example 3: Code Review (Senior Developer)
-console.log('👩‍💻 EXAMPLE 3: CODE REVIEW - SENIOR DEVELOPER');
-console.log('-'.repeat(80));
-const seniorReviewPrompt = codeReviewPrompt({
-  code: sampleCodeSenior,
-  user: sampleUserSenior,
-  review: sampleReviewSenior,
-  styleGuideNote: styleGuideNote(sampleReviewSenior.styleGuide),
-});
-console.log(seniorReviewPrompt);
-console.log();
-console.log();
+      console.log('Sending to OpenAI...');
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert code reviewer.',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.7,
+      });
 
-// Example 4: Data Analysis
-console.log('📊 EXAMPLE 4: DATA ANALYSIS');
-console.log('-'.repeat(80));
-const analysisPrompt = dataAnalysisPrompt({
-  dataset: sampleDataset,
-  goals: sampleGoals,
-  preferences: analysisPreferences,
-  timeRangeInfo: formatTimeRange(sampleDataset.timeRange),
-  hypothesesInfo: formatHypotheses(sampleGoals.hypotheses),
-  focusAreasInfo: formatFocusAreas(analysisPreferences.focusAreas),
-});
-console.log(analysisPrompt);
-console.log();
-console.log();
+      console.log('\nOpenAI Response:');
+      console.log('-'.repeat(80));
+      console.log(completion.choices[0].message.content);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error calling OpenAI:', error.message);
+      }
+    }
+  } else {
+    console.log(
+      'Set OPENAI_API_KEY environment variable to test with OpenAI API',
+    );
+  }
+}
 
-// Example 5: Customer Support (Technical Issue)
-console.log('🎧 EXAMPLE 5: CUSTOMER SUPPORT - TECHNICAL ISSUE');
-console.log('-'.repeat(80));
-const supportPrompt = customerSupportPrompt({
-  ticket: sampleTicket,
-  customer: sampleCustomer,
-  product: sampleProduct,
-  guidelines: sampleGuidelines,
-  knownIssuesInfo: formatKnownIssues(sampleProduct.knownIssues),
-  recentUpdatesInfo: formatRecentUpdates(sampleProduct.recentUpdates),
-  escalationInfo: formatEscalation(sampleGuidelines.escalationCriteria),
-});
-console.log(supportPrompt);
-console.log();
-console.log();
-
-// Example 6: Customer Support (Billing Inquiry)
-console.log('💳 EXAMPLE 6: CUSTOMER SUPPORT - BILLING INQUIRY');
-console.log('-'.repeat(80));
-const billingSupportPrompt = customerSupportPrompt({
-  ticket: sampleTicketBilling,
-  customer: sampleCustomerBilling,
-  product: sampleProduct,
-  guidelines: sampleGuidelinesFriendly,
-  knownIssuesInfo: formatKnownIssues(sampleProduct.knownIssues),
-  recentUpdatesInfo: formatRecentUpdates(sampleProduct.recentUpdates),
-  escalationInfo: formatEscalation(sampleGuidelinesFriendly.escalationCriteria),
-});
-console.log(billingSupportPrompt);
-console.log();
-console.log();
-
-console.log('='.repeat(80));
-console.log('✅ All examples generated successfully!');
-console.log('='.repeat(80));
-console.log();
-console.log('💡 KEY TAKEAWAYS:');
-console.log('  • Type safety prevents missing or incorrect context data');
-console.log('  • Nested paths enable rich, structured prompt templates');
-console.log('  • Reusable templates ensure consistency across your application');
-console.log('  • Refactoring is safe - TypeScript catches breaking changes');
-console.log('  • Custom formatters adapt data for AI consumption');
-console.log();
+main().catch(console.error);

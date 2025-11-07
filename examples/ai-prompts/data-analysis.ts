@@ -178,7 +178,7 @@ export const sampleGoals: AnalysisGoals = {
   secondaryQuestions: [
     'Are there distinct customer segments with different purchasing patterns?',
     'Which marketing channels drive the highest-value customers?',
-    'What is the optimal time to re-engage customers who haven\'t purchased recently?',
+    "What is the optimal time to re-engage customers who haven't purchased recently?",
     'How does seasonality affect different customer segments?',
   ],
   hypotheses: [
