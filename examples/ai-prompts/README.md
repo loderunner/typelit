@@ -59,26 +59,3 @@ const completion = await openai.chat.completions.create({
   messages: [{ role: 'user', content: prompt }],
 });
 ```
-
-## Custom Formatters
-
-Create formatters specific to LLM use cases:
-
-```typescript
-import { createType } from 'typelit';
-
-const typelitTokenCount = createType<number>({
-  stringify: (tokens) =>
-    tokens < 1000
-      ? `${tokens} tokens`
-      : `${(tokens / 1000).toFixed(1)}K tokens`,
-});
-
-const typelitTemperature = createType<number>({
-  stringify: (temp) => {
-    if (temp <= 0.3) return `${temp} (focused)`;
-    if (temp <= 0.7) return `${temp} (balanced)`;
-    return `${temp} (creative)`;
-  },
-});
-```

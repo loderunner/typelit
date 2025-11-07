@@ -1,5 +1,3 @@
-import { createType } from '../../src/typelit';
-
 import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
 
 /**
@@ -8,66 +6,6 @@ import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
  * Demonstrates using Typelit with OpenAI's API.
  * Run with: npx tsx examples/ai-prompts/index.ts
  */
-
-// ============================================================================
-// Custom Formatters for AI Prompts
-// ============================================================================
-
-/**
- * Format token count with appropriate scale
- */
-export const typelitTokenCount = createType<number>({
-  stringify: (tokens) => {
-    if (tokens < 1000) return `${tokens} tokens`;
-    if (tokens < 1000000) return `${(tokens / 1000).toFixed(1)}K tokens`;
-    return `${(tokens / 1000000).toFixed(2)}M tokens`;
-  },
-});
-
-/**
- * Format model temperature parameter with description
- */
-export const typelitTemperature = createType<number>({
-  stringify: (temp) => {
-    if (temp < 0 || temp > 2) return `${temp} (invalid range)`;
-    if (temp <= 0.3) return `${temp} (very focused)`;
-    if (temp <= 0.7) return `${temp} (balanced)`;
-    if (temp <= 1.2) return `${temp} (creative)`;
-    return `${temp} (highly creative)`;
-  },
-});
-
-/**
- * Format markdown code blocks properly escaped for prompts
- */
-export const typelitMarkdown = createType<string>({
-  stringify: (markdown) => {
-    return markdown.trim();
-  },
-});
-
-/**
- * Format numbers as percentages
- */
-export const typelitPercentage = createType<number>({
-  stringify: (value) => `${(value * 100).toFixed(1)}%`,
-});
-
-/**
- * Format currency values
- */
-export const typelitCurrency = createType<number>({
-  stringify: (value) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(value);
-  },
-});
-
-// ============================================================================
-// Example: Code Review with OpenAI
-// ============================================================================
 
 async function main() {
   // Generate type-safe prompt
