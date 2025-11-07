@@ -1,10 +1,6 @@
 import { createType } from '../../src/typelit';
 
-import {
-  codeReviewPrompt,
-  sampleCode,
-  sampleReview,
-} from './code-review';
+import { codeReviewPrompt, sampleCode, sampleReview } from './code-review';
 
 /**
  * AI Prompt Generation Examples
@@ -76,10 +72,8 @@ export const typelitCurrency = createType<number>({
 async function main() {
   // Generate type-safe prompt
   const prompt = codeReviewPrompt({
-    code: sampleCodeJunior,
-    user: sampleUserJunior,
-    review: sampleReviewJunior,
-    styleGuideNote: styleGuideNote(sampleReviewJunior.styleGuide),
+    code: sampleCode,
+    review: sampleReview,
   });
 
   console.log('Generated Prompt:');
