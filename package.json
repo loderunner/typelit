@@ -58,7 +58,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "61.4.1",
     "globals": "16.5.0",
-    "prettier": "3.7.3",
+    "prettier": "3.7.4",
     "rimraf": "6.1.2",
     "rollup": "4.53.3",
     "rollup-plugin-dts": "6.3.0",
