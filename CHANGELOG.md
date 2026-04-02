@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/loderunner/typelit/compare/typelit-v0.2.0...typelit-v0.2.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* bump actions/checkout from 5 to 6 ([#179](https://github.com/loderunner/typelit/issues/179)) ([46d3a54](https://github.com/loderunner/typelit/commit/46d3a5479903a78db1e04391a8aad949c70dfabc))
+
 ## [0.2.0](https://github.com/loderunner/typelit/compare/typelit-v0.1.2...typelit-v0.2.0) (2025-11-06)
 
 
